@@ -2,8 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { User } from './user.entity';
 
+export interface UserRepositoryInterface {
+  save(user: User): Promise<void>;
+  findById(userId: User['id']): Promise<User>;
+}
+
 @Injectable()
-export class UserRepository {
+export class UserRepository implements UserRepositoryInterface {
   constructor(private prisma: PrismaService) {}
 
   async save(user: User): Promise<void> {
@@ -12,12 +17,19 @@ export class UserRepository {
     });
   }
 
-  async findOne(userId: User['id']): Promise<User | null> {
-    const selected = await this.prisma.user.findUnique({
+  async findById(userId: User['id']): Promise<User | null> {
+    const userData = await this.prisma.user.findUnique({
       where: { id: userId },
     });
-    if (!selected) return null;
-    const { id, ...rest } = selected;
-    return new User(rest, id);
+    if (!userData) return null;
+    return new User(
+      userData.id,
+      userData.email,
+      userData.name,
+      userData.password,
+      userData.createdAt,
+      userData.phone,
+      userData.photo,
+    );
   }
 }

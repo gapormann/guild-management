@@ -1,47 +1,44 @@
 import { ulid } from 'ulid';
 import * as bcrypt from 'bcrypt';
-import {
-  IsEmail,
-  IsOptional,
-  IsString,
-  IsStrongPassword,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
 
 export class User {
-  constructor(props: Omit<User, 'id'>, id?: string) {
-    if (!id) {
-      const sault = bcrypt.genSaltSync();
-      props.password = bcrypt.hashSync(props.password, sault);
-      this.id = id ? id : ulid();
-      this.createdAt = new Date();
-    } else {
-      this.id = id;
-    }
-    Object.assign(this, props);
+  public readonly id: string;
+  public email: string;
+  public name: string;
+  public password: string;
+  public phone?: string;
+  public photo?: string;
+  public createdAt: Date;
+
+  constructor(
+    id: string,
+    email: string,
+    name: string,
+    password: string,
+    createdAt: Date,
+    phone?: string,
+    photo?: string,
+  ) {
+    this.id = id;
+    this.email = email;
+    this.name = name;
+    this.password = password;
+    this.phone = phone;
+    this.photo = photo;
+    this.createdAt = createdAt;
   }
 
-  public readonly id: string;
-  @IsEmail()
-  public email: string;
-  @MinLength(3)
-  public name: string;
-  @IsStrongPassword({
-    minLength: 8,
-    minLowercase: 1,
-    minNumbers: 1,
-    minSymbols: 1,
-    minUppercase: 1,
-  })
-  public password: string;
-  @IsOptional()
-  @IsString()
-  @MinLength(11)
-  @MaxLength(16)
-  public phone?: string;
-  @IsOptional()
-  @IsString()
-  public photo?: string;
-  public createdAt?: Date;
+  static create(
+    email: string,
+    name: string,
+    password: string,
+    phone?: string,
+    photo?: string,
+  ) {
+    const id = ulid();
+    const sault = bcrypt.genSaltSync();
+    const encryptedPass = bcrypt.hashSync(password, sault);
+    const createdAt = new Date();
+    return new User(id, email, name, encryptedPass, createdAt, phone, photo);
+  }
 }
