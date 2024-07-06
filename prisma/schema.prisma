@@ -14,42 +14,10 @@ datasource db {
 }
 
 model User {
-  id         String       @id
-  email      String       @unique
-  name       String
-  password   String
-  phone      String?
-  photo      String?
-  createdAt  DateTime     @default(now()) @map("created_at")
-  guilds     Guild[]
-  characters Characters[]
+  id        String   @id @db.VarChar(26)
+  email     String   @unique @db.VarChar(100)
+  password  String   @db.VarChar(64)
+  createdAt DateTime @default(now()) @map("created_at")
 
   @@map("users")
-}
-
-model Guild {
-  id              String       @id
-  name            String
-  tagImage        String?      @map("tag_image")
-  characterConfig Json         @map("character_config")
-  owner           User         @relation(fields: [ownerId], references: [id])
-  ownerId         String       @map("owner_id")
-  createdAt       DateTime     @default(now()) @map("created_at")
-  members         Characters[]
-
-  @@map("guilds")
-}
-
-model Characters {
-  id              String   @id
-  nick            String
-  avatar          String?
-  guild           Guild    @relation(fields: [guildId], references: [id])
-  guildId         String   @map("guild_id")
-  player          User     @relation(fields: [playerId], references: [id])
-  playerId        String   @map("player_id")
-  characterConfig Json     @map("character_config")
-  createdAt       DateTime @default(now()) @map("created_at")
-
-  @@map("characters")
 }
