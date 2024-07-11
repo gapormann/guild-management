@@ -6,9 +6,9 @@ import { CreateUser } from './use-cases/users/create-user'
   const database = new Database()
   const userRepository = new UserRepositoryDatabase(database)
   const createUser = new CreateUser(userRepository)
-  const user = await createUser.execute(
-    'gabriel.pormann@gmail.com',
-    'teste-senha'
-  )
+  const user = await createUser.execute({
+    email: 'gabriel.pormann@gmail.com',
+    password: 'teste-senha'
+  })
   console.log(user)
 })()
