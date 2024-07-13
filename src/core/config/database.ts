@@ -19,6 +19,6 @@ export class Database {
   }
 
   public async close(): Promise<void> {
-      await this.pgp.end();
+      this.pgp.end();
   }
 }

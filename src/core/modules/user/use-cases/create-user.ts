@@ -4,7 +4,7 @@ import { User } from '../user.entity';
 
 export class CreateUser {
   constructor(private readonly userRepository: UserRepository) {}
-  async execute(input: Input): Promise<Output> {
+  async execute(input: Input): Promise<CreateUserOutput> {
     const user = User.create(new EmailAddress(input.email), input.password)
     await this.userRepository.save(user)
     return {
@@ -21,7 +21,7 @@ type Input = {
   password: string;
 }
 
-type Output = {
+export type CreateUserOutput = {
   user: {
     id: string;
     email: string;
