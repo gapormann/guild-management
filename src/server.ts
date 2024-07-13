@@ -1,6 +1,6 @@
-import { Database } from './config/database'
-import { UserRepositoryDatabase } from './repositories/user/UserRepositoryDatabase'
-import { CreateUser } from './use-cases/users/create-user'
+import { Database } from './core/config/database'
+import { UserRepositoryDatabase } from './core/modules/user/repositories/UserRepositoryDatabase'
+import { CreateUser } from './core/modules/user/use-cases/create-user'
 
 (async () => {
   const database = new Database()

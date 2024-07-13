@@ -1,4 +1,4 @@
-import { User } from '../../models/User';
+import { User } from '../user.entity';
 import { UserRepository } from './UserRepository';
 
 export class UserRepositoryMock implements UserRepository {

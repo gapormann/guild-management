@@ -1,6 +1,6 @@
-import { EmailAddress } from '../object-values/EmailAddress'
 import { ulid } from 'ulid'
 import * as bcrypt from 'bcrypt'
+import { EmailAddress } from '../../object-values/EmailAddress'
 
 export class User {
   public id: string
